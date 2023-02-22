@@ -179,19 +179,17 @@ def argmin(f, lo, hi, epsilon=1e-3):
     >>> argmin(lambda x: (x-5)**2, -20, 0)
     -0.00016935087808430278
     '''
-    minima = None
-    if hi - lo < epsilon:
-        return minima
 
-    def go(m1, m2, lo, hi):
-        smallest = min([m1, m2, lo, hi])
-        if smallest < hi and smallest > lo:
-            hi = smallest
-        else:
-            lo = smallest
-        return go(lo, hi)
+    if (hi - lo) < epsilon:
+        return (hi + lo) / 2
+    m1 = lo + (hi - lo) / 2.5
+    m2 = hi - (hi - lo) / 2.5
 
-    return go(lo - epsilon, hi - epsilon)
+    if f(m1) < f(m2):
+        return argmin(f, lo, m2, epsilon)
+    else:
+        return argmin(f, m1, hi, epsilon)
+
 
 ######################################################################
 # the functions below are extra credit
